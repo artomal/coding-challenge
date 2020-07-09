@@ -7,18 +7,93 @@ import java.util.List;
 public class CircularQueue {
 
   public static class Queue {
-    public Queue(int capacity) {}
+
+    private Integer[] queue;
+    private int tail;
+    private int head;
+    int elements = 0;
+
+    public Queue(int capacity) {
+      this.queue = new Integer[capacity];
+      this.tail = this.queue.length - 1;
+      this.head = this.tail;
+    }
+
     public void enqueue(Integer x) {
-      // TODO - you fill in here.
+//      printIdx("enqueue");
+      if(tail < 0)
+        tail = this.queue.length - 1;
+
+      queue[tail--] = x;
+      elements++;
+
+      if(queue.length == elements){
+        System.out.println("resize up");
+        resize();
+      }
+
       return;
     }
+
     public Integer dequeue() {
-      // TODO - you fill in here.
-      return 0;
+//      printIdx("dequeue");
+      if(elements < 1)
+        return 0;
+
+      if(head < 0)
+        head = this.queue.length - 1;
+
+      int elm = queue[head];
+      queue[head--] = null;
+      elements--;
+
+      if(queue.length / 2 < elements)
+        System.out.println("resize down");
+
+      return elm;
     }
+
+    private void resize(){
+      Integer[] temp = new Integer[queue.length * 2];
+
+      int idx = temp.length - 1;
+      int headIterator = head;
+      int iterations = elements;
+
+//      System.out.println("HEAD ITERATOR " + headIterator);
+//      System.out.println("TAIL ITERATOR " + tail);
+      while(iterations-- > 0){
+        if(headIterator < 0)
+          headIterator = queue.length - 1;
+
+        Integer elm = queue[headIterator--];
+//        System.out.println(" -- COPYING " + elm);
+        temp[idx--] = elm;
+      }
+      this.queue = temp;
+      this.head = queue.length - 1;
+      this.tail = head - elements;
+//      printIdx("resize");
+    }
+
+    private void printIdx(String action){
+      System.out.println("[" + action + "][ELMENTS] " + elements);
+      System.out.println("[" + action + "][HEAD IDX] " + head);
+      System.out.println("[" + action + "][TAIL IDX] " + tail);
+      printQueue();
+    }
+
+    private void printQueue(){
+      System.out.print("[");
+      for(int i = 0; i < queue.length - 1; i++){
+        System.out.print(queue[i] + ", ");
+      }
+      System.out.print(queue[queue.length-1]);
+      System.out.println("]");
+    }
+
     public int size() {
-      // TODO - you fill in here.
-      return 0;
+      return this.elements;
     }
     @Override
     public String toString() {

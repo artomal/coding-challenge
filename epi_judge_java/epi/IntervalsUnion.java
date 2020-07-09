@@ -5,6 +5,7 @@ import epi.test_framework.GenericTest;
 import epi.test_framework.TimedExecutor;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 public class IntervalsUnion {
 
@@ -19,8 +20,49 @@ public class IntervalsUnion {
   }
 
   public static List<Interval> unionOfIntervals(List<Interval> intervals) {
-    // TODO - you fill in here.
-    return Collections.emptyList();
+    Collections.sort(intervals, (o1, o2) -> {
+      if(Integer.compare(o1.left.val, o2.left.val) != 0){
+        return o1.left.val - o2.left.val;
+      }
+
+      if(o1.left.isClosed && !o2.left.isClosed){
+        return -1;
+      }
+
+      if(!o1.left.isClosed && o2.left.isClosed){
+        return -1;
+      }
+      return 0;
+    });
+
+    List<Interval> res = new ArrayList<>();
+    Interval cur = intervals.get(0);
+
+    for(int i = 1; i < intervals.size(); i++){
+      Interval inter = intervals.get(i);
+      if(inter.left.val < cur.right.val
+              || (inter.left.val == cur.right.val
+                  && (inter.left.isClosed || cur.right.isClosed))){
+
+        if(cur.left.val == inter.left.val && inter.left.isClosed)
+          cur.left.isClosed = true;
+
+        if(cur.right.val <= inter.right.val){
+          if(!cur.right.isClosed || cur.right.val < inter.right.val)
+            cur.right.isClosed = inter.right.isClosed;
+
+          cur.right.val = inter.right.val;
+        }
+      } else {
+        res.add(cur);
+        cur = inter;
+      }
+    }
+
+    if(!res.contains(cur))
+      res.add(cur);
+
+    return res;
   }
   @EpiUserType(
       ctorParams = {int.class, boolean.class, int.class, boolean.class})

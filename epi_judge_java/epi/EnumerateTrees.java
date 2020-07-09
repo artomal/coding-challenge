@@ -11,8 +11,23 @@ public class EnumerateTrees {
 
   public static List<BinaryTreeNode<Integer>>
   generateAllBinaryTrees(int numNodes) {
-    // TODO - you fill in here.
-    return Collections.emptyList();
+    List<BinaryTreeNode<Integer>> ans = new ArrayList<>();
+    if(numNodes == 0) {
+      ans.add(null);
+    }
+
+    for(int i = 0; i < numNodes; i++){
+      List<BinaryTreeNode<Integer>> leftSubtrees = generateAllBinaryTrees(i);
+      List<BinaryTreeNode<Integer>> rightSubtrees = generateAllBinaryTrees(numNodes - 1 - i);
+
+      for(BinaryTreeNode<Integer> left : leftSubtrees){
+        for(BinaryTreeNode<Integer> right : rightSubtrees){
+          ans.add(new BinaryTreeNode<>(0, left, right));
+        }
+      }
+    }
+
+    return ans;
   }
   public static List<Integer> serializeStructure(BinaryTreeNode<Integer> tree) {
     List<Integer> result = new ArrayList<>();

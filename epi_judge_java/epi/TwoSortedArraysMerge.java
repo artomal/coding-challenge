@@ -6,7 +6,21 @@ public class TwoSortedArraysMerge {
 
   public static void mergeTwoSortedArrays(List<Integer> A, int m,
                                           List<Integer> B, int n) {
-    // TODO - you fill in here.
+    int aIdx = m - 1; int bIdx = n - 1; int wIdx = m + n - 1;
+
+    while(wIdx >= 0){
+      int a = aIdx >= 0 ? A.get(aIdx) : Integer.MIN_VALUE;
+      int b = bIdx >= 0 ? B.get(bIdx) : Integer.MIN_VALUE;
+
+      if(a > b || a == b){
+        A.set(wIdx--, a);
+        aIdx--;
+      } else {
+        A.set(wIdx--, b);
+        bIdx--;
+      }
+    }
+
     return;
   }
   @EpiTest(testDataFile = "two_sorted_arrays_merge.tsv")

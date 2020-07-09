@@ -4,7 +4,21 @@ import epi.test_framework.GenericTest;
 public class IsNumberPalindromic {
   @EpiTest(testDataFile = "is_number_palindromic.tsv")
   public static boolean isPalindromeNumber(int x) {
-    // TODO - you fill in here.
+    if(x < 0)
+      return false;
+
+    int dig = ((int) Math.log10(x));
+
+    while(dig >= 0){
+      int divider = (int) (Math.pow(10, dig));
+      if(x / divider != x % 10)
+        return false;
+
+      x %= divider;
+      x /= 10;
+
+      dig = dig - 2;
+    }
     return true;
   }
 

@@ -5,10 +5,25 @@ import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 import epi.test_framework.TimedExecutor;
 public class LowestCommonAncestor {
+
   public static BinaryTreeNode<Integer> LCA(BinaryTreeNode<Integer> tree,
-                                            BinaryTreeNode<Integer> node0,
-                                            BinaryTreeNode<Integer> node1) {
-    // TODO - you fill in here.
+                                            BinaryTreeNode<Integer> n0,
+                                            BinaryTreeNode<Integer> n1) {
+    if(tree == null)
+      return null;
+
+    if(tree == n0 || tree == n1)
+      return tree;
+
+    BinaryTreeNode<Integer> resLeft = LCA(tree.left, n0, n1);
+    BinaryTreeNode<Integer> resRight = LCA(tree.right, n0, n1);
+
+    if(resLeft != null && resRight != null)
+      return tree;
+
+    if(resLeft != null || resRight != null)
+      return resLeft != null ? resLeft : resRight;
+
     return null;
   }
   @EpiTest(testDataFile = "lowest_common_ancestor.tsv")

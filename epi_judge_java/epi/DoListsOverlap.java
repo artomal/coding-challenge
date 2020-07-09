@@ -9,7 +9,10 @@ public class DoListsOverlap {
 
   public static ListNode<Integer> overlappingLists(ListNode<Integer> l0,
                                                    ListNode<Integer> l1) {
-    // TODO - you fill in here.
+    ListNode<Integer> cur = l0;
+    ListNode<Integer> faster = cur;
+
+
     return null;
   }
   @EpiTest(testDataFile = "do_lists_overlap.tsv")

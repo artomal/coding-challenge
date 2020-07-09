@@ -6,11 +6,46 @@ import epi.test_framework.TimedExecutor;
 public class DescendantAndAncestorInBst {
 
   public static boolean
-  pairIncludesAncestorAndDescendantOfM(BstNode<Integer> possibleAncOrDesc0,
-                                       BstNode<Integer> possibleAncOrDesc1,
-                                       BstNode<Integer> middle) {
-    // TODO - you fill in here.
-    return true;
+  pairIncludesAncestorAndDescendantOfM(BstNode<Integer> n1,
+                                       BstNode<Integer> n2,
+                                       BstNode<Integer> m) {
+    if(m == n1 && m == n2)
+      return false;
+
+    BstNode<Integer> nod1 = n1;
+    BstNode<Integer> nod2 = n2;
+    boolean found = false;
+
+    while(nod1 != null || nod2 != null){
+      if(nod1 != null && nod1.data.compareTo(m.data) == 0){
+        found = true;
+        break;
+      }
+
+      if(nod2 != null && nod2.data.compareTo(m.data) == 0){
+        n2 = n1;
+        found = true;
+        break;
+      }
+
+      if(nod1 != null)
+        nod1 = nod1.data.compareTo(m.data) < 0 ? nod1.right : nod1.left;
+
+      if(nod2 != null)
+        nod2 = nod2.data.compareTo(m.data) < 0 ? nod2.right : nod2.left;
+    }
+
+    if(!found)
+      return false;
+
+    while(m != null){
+      if(m.data.compareTo(n2.data) == 0)
+        return true;
+
+      m = m.data.compareTo(n2.data) < 0 ? m.right : m.left;
+    }
+
+    return false;
   }
   @EpiTest(testDataFile = "descendant_and_ancestor_in_bst.tsv")
   public static boolean pairIncludesAncestorAndDescendantOfMWrapper(

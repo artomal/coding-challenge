@@ -8,10 +8,40 @@ import java.util.Collections;
 import java.util.List;
 public class TreeExterior {
 
+  enum Side {
+    L, R;
+  }
+
+  public static void traverse(BinaryTreeNode<Integer> tree, Side side, boolean log, List<BinaryTreeNode<Integer>> ans){
+    if(tree == null)
+      return;
+
+    if(tree.left == null && tree.right == null) {
+      ans.add(tree);
+      return;
+    }
+
+    if(Side.L.equals(side) && log)
+      ans.add(tree);
+
+    traverse(tree.left, side, (Side.L.equals(side) || tree.right == null) && log, ans);
+    traverse(tree.right, side, (Side.R.equals(side) || tree.left == null) && log, ans);
+
+    if(Side.R.equals(side) && log)
+      ans.add(tree);
+  }
+
   public static List<BinaryTreeNode<Integer>>
   exteriorBinaryTree(BinaryTreeNode<Integer> tree) {
-    // TODO - you fill in here.
-    return Collections.emptyList();
+    if(tree == null)
+      return Collections.EMPTY_LIST;
+
+    List<BinaryTreeNode<Integer>> ans = new ArrayList<>();
+    ans.add(tree);
+
+    traverse(tree.left, Side.L, true, ans);
+    traverse(tree.right, Side.R, true, ans);
+    return ans;
   }
   private static List<Integer> createOutputList(List<BinaryTreeNode<Integer>> L)
       throws TestFailure {

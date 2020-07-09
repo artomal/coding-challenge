@@ -4,17 +4,27 @@ import epi.test_framework.RandomSequenceChecker;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 import epi.test_framework.TimedExecutor;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 public class NonuniformRandomNumber {
 
   public static int
   nonuniformRandomNumberGeneration(List<Integer> values,
                                    List<Double> probabilities) {
-    // TODO - you fill in here.
-    return 0;
+    List<Double> intervals = new ArrayList<>();
+    intervals.add(0.0);
+    for(double p : probabilities){
+      intervals.add(intervals.get(intervals.size() - 1) + p);
+    }
+
+    double ran = new Random().nextDouble();
+    int idx = Collections.binarySearch(intervals, ran);
+    if(idx < 0){
+      return values.get((Math.abs(idx) - 1) - 1);
+    } else {
+      return values.get(idx);
+    }
   }
   private static boolean nonuniformRandomNumberGenerationRunner(
       TimedExecutor executor, List<Integer> values, List<Double> probabilities)

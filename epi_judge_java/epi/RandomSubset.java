@@ -4,15 +4,34 @@ import epi.test_framework.RandomSequenceChecker;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 import epi.test_framework.TimedExecutor;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+
+import java.util.*;
+
 public class RandomSubset {
+   public static int findNext(int sIdx, int ran, int n){
+     int next = sIdx;
+     if(sIdx + ran > n){
+       return n - sIdx + (ran -  (n - sIdx));
+     }
+     return sIdx + ran;
+   }
 
   // Returns a random k-sized subset of {0, 1, ..., n - 1}.
   public static List<Integer> randomSubset(int n, int k) {
-    // TODO - you fill in here.
-    return Collections.emptyList();
+    Set<Integer> check = new HashSet<>();
+    List<Integer> res = new LinkedList<>();
+
+    for(int i = 0; i < k; i++){
+      int ran = new Random().nextInt(n);
+      if(!check.contains(ran)){
+        res.add(ran);
+        check.add(ran);
+      } else {
+        i--;
+      }
+    }
+
+    return res;
   }
   private static boolean randomSubsetRunner(TimedExecutor executor, int n,
                                             int k) throws Exception {

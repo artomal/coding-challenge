@@ -3,33 +3,52 @@ import epi.test_framework.EpiTest;
 import epi.test_framework.EpiUserType;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
-import java.util.List;
+
+import java.util.*;
+
 public class AddingCredits {
 
   public static class ClientsCreditsInfo {
+
+    Map<String, Integer> clients = new HashMap<>();
+    TreeMap<Integer, Set<String>> pointsToClients = new TreeMap<>();
+    int offset = 0;
+
     public void insert(String clientID, int c) {
-      // TODO - you fill in here.
+      if(clients.containsKey(clientID)){
+        pointsToClients.get(clients.get(clientID)).remove(clientID);
+      }
+
+      if(pointsToClients.get(c - offset) == null)
+        pointsToClients.put(c - offset, new HashSet<>());
+
+      clients.put(clientID, c - offset);
+      pointsToClients.get(c - offset).add(clientID);
       return;
     }
     public boolean remove(String clientID) {
-      // TODO - you fill in here.
+      if(!clients.containsKey(clientID))
+        return false;
+
+      pointsToClients.get(clients.get(clientID)).remove(clientID);
+      clients.remove(clientID);
       return true;
     }
     public int lookup(String clientID) {
-      // TODO - you fill in here.
-      return 0;
+      if(clients.containsKey(clientID))
+        return clients.get(clientID) + offset;
+
+      return -1;
     }
     public void addAll(int C) {
-      // TODO - you fill in here.
+      offset += C;
       return;
     }
     public String max() {
-      // TODO - you fill in here.
-      return "";
+      return pointsToClients.lastEntry().getValue().iterator().next();
     }
     @Override
     public String toString() {
-      // TODO - you fill in here.
       return super.toString();
     }
   }

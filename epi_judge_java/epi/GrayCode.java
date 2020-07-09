@@ -3,15 +3,44 @@ import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 import epi.test_framework.TimedExecutor;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
+
 public class GrayCode {
 
+  public static boolean solve(int bits, HashSet<Integer> hist, List<Integer> res) {
+    if(res.size() == (1 << bits))
+      return true;
+
+    int last = res.get(res.size() - 1);
+    for(int i = 0; i < bits; i++){
+      int cand = last ^ (1 << i);
+      if(!hist.contains(cand)
+              && diff(cand, last)){
+        res.add(cand);
+        hist.add(cand);
+        if(solve(bits, hist, res))
+          return true;
+        hist.remove(cand);
+        res.remove(res.size() - 1);
+      }
+    }
+
+    return false;
+  }
+
+  public static boolean diff(int cand, int last){
+    if(Math.abs(Integer.bitCount(cand) - Integer.bitCount(last)) == 1){
+      return true;
+    }
+    return false;
+  }
+
   public static List<Integer> grayCode(int numBits) {
-    // TODO - you fill in here.
-    return Collections.emptyList();
+//    System.out.println(Integer.toBinaryString(Integer.parseInt("011", 2) ^ (1 << 2)));
+    List<Integer> res = new ArrayList<>(Arrays.asList(0));
+    solve(numBits, new HashSet<>(Arrays.asList(0)), res);
+    return res;
   }
   private static boolean differsByOneBit(int x, int y) {
     int bitDifference = x ^ y;

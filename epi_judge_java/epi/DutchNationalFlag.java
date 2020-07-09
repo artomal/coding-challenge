@@ -4,14 +4,57 @@ import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 import epi.test_framework.TimedExecutor;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 public class DutchNationalFlag {
   public enum Color { RED, WHITE, BLUE }
 
+  /*
+
+   i = 1
+   idx 0 1 2 3 4 5 6
+ array [1,0,1,2,1,2,0]
+
+   */
+
   public static void dutchFlagPartition(int pivotIndex, List<Color> A) {
     // TODO - you fill in here.
+    if(A == null || A.size() == 0) {
+      return;
+    }
+
+    Color p = A.get(pivotIndex);
+    int l = 0; int e = 0; int a = A.size() - 1;
+
+    while(e <= a){
+      Color current = A.get(a);
+
+      if(current.compareTo(p) > 0){
+        a--;
+      } else if(current.compareTo(p) == 0){
+        Collections.swap(A, a, e++);
+      } else {
+        if(l != e && e != a){
+          Collections.swap(A, l, e++);
+          Collections.swap(A, l++, a);
+        } else {
+          Collections.swap(A, l, a);
+          l++; e++;
+        }
+      }
+    }
+
     return;
   }
+
+  public static void printList(List<Color> a){
+    System.out.println("===");
+    for(Color c : a){
+      System.out.println("[Index]" + c.ordinal());
+    }
+    System.out.println("===");
+  }
+
   @EpiTest(testDataFile = "dutch_national_flag.tsv")
   public static void dutchFlagPartitionWrapper(TimedExecutor executor,
                                                List<Integer> A, int pivotIdx)

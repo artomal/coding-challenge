@@ -1,13 +1,21 @@
 package epi;
 import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
+
+import java.util.Collections;
 import java.util.List;
 public class MinimumWaitingTime {
   @EpiTest(testDataFile = "minimum_waiting_time.tsv")
+  public static int minimumTotalWaitingTime(List<Integer> A) {
+    Collections.sort(A);
 
-  public static int minimumTotalWaitingTime(List<Integer> serviceTimes) {
-    // TODO - you fill in here.
-    return 0;
+    int ans = 0; int prev = 0;
+    for(int i = 0; i < A.size() - 1; i++){
+      prev += A.get(i);
+      ans += prev;
+    }
+
+    return ans;
   }
 
   public static void main(String[] args) {

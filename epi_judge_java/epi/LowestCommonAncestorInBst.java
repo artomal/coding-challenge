@@ -6,12 +6,21 @@ import epi.test_framework.TestFailure;
 import epi.test_framework.TimedExecutor;
 public class LowestCommonAncestorInBst {
 
+  public static BstNode<Integer> find(BstNode<Integer> tree, BstNode<Integer> s, BstNode<Integer> b){
+    if(s.data <= tree.data && tree.data <= b.data){
+      return tree;
+    } else if(tree.data > s.data){
+      return find(tree.left, s, b);
+    } else {
+      return find(tree.right, s, b);
+    }
+  }
+
   // Input nodes are nonempty and the key at s is less than or equal to that at
   // b.
   public static BstNode<Integer>
   findLCA(BstNode<Integer> tree, BstNode<Integer> s, BstNode<Integer> b) {
-    // TODO - you fill in here.
-    return null;
+    return find(tree, s, b);
   }
   @EpiTest(testDataFile = "lowest_common_ancestor_in_bst.tsv")
   public static int lcaWrapper(TimedExecutor executor, BstNode<Integer> tree,

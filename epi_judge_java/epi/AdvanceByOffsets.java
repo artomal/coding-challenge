@@ -4,8 +4,16 @@ import epi.test_framework.GenericTest;
 import java.util.List;
 public class AdvanceByOffsets {
   @EpiTest(testDataFile = "advance_by_offsets.tsv")
-  public static boolean canReachEnd(List<Integer> maxAdvanceSteps) {
-    // TODO - you fill in here.
+  public static boolean canReachEnd(List<Integer> A) {
+    int r = 1;
+
+    for(int i =0; i < A.size() - 1; i++){
+      if(--r == 0 && A.get(i) == 0)
+        return false;
+
+       r = Math.max(A.get(i), r);
+    }
+
     return true;
   }
 

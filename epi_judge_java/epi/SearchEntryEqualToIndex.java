@@ -7,8 +7,21 @@ import java.util.List;
 public class SearchEntryEqualToIndex {
 
   public static int searchEntryEqualToItsIndex(List<Integer> A) {
-    // TODO - you fill in here.
-    return 0;
+    int L = 0; int R = A.size() - 1;
+
+    while(L <= R){
+      int mid = (L + R) / 2;
+
+      if(A.get(mid).compareTo(mid) == 0) {
+        return mid;
+      } else if(A.get(mid).compareTo(mid) < 0){
+        L = mid + 1;
+      } else {
+        R = mid;
+      }
+    }
+
+    return -1;
   }
   @EpiTest(testDataFile = "search_entry_equal_to_index.tsv")
   public static void searchEntryEqualToItsIndexWrapper(TimedExecutor executor,

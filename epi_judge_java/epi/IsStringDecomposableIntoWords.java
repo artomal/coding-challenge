@@ -3,16 +3,41 @@ import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 import epi.test_framework.TimedExecutor;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
+
 public class IsStringDecomposableIntoWords {
+
+  public static boolean solve(String s, int L, LinkedList<String> resList, Set<String> dic, Map<Integer, Boolean> state){
+    if(L == s.length()) {
+      return true;
+    }
+
+    if(state.containsKey(L)) {
+      return state.get(L);
+    }
+
+    for(int i = L; i < s.length(); i++){
+      String word = s.substring(L, i + 1);
+      if(dic.contains(word)){
+        resList.addLast(word);
+        boolean res = solve(s, i + 1, resList, dic, state);
+        state.put(L, res);
+        if(res)
+          return true;
+        resList.removeLast();
+      }
+    }
+    return false;
+  }
 
   public static List<String>
   decomposeIntoDictionaryWords(String domain, Set<String> dictionary) {
-    // TODO - you fill in here.
-    return Collections.emptyList();
+    LinkedList<String> res = new LinkedList<>();
+    solve(domain, 0, res, dictionary, new HashMap<>());
+    return res;
   }
+
   @EpiTest(testDataFile = "is_string_decomposable_into_words.tsv")
   public static void decomposeIntoDictionaryWordsWrapper(TimedExecutor executor,
                                                          String domain,

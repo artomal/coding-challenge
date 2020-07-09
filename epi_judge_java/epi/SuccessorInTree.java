@@ -5,8 +5,34 @@ import epi.test_framework.GenericTest;
 import epi.test_framework.TimedExecutor;
 public class SuccessorInTree {
 
+  public static BinaryTree<Integer> traverseUp(BinaryTree<Integer> node, BinaryTree<Integer> prev){
+    while(node.parent != null && node.parent.right == node){
+      node = node.parent;
+    }
+    return node;
+  }
+
+  public static BinaryTree<Integer> findLeftmost(BinaryTree<Integer> node){
+    while(node.left != null){
+      node = node.left;
+    }
+    return node;
+  }
+
   public static BinaryTree<Integer> findSuccessor(BinaryTree<Integer> node) {
-    // TODO - you fill in here.
+    if(node == null)
+      return null;
+
+    if(node.right != null)
+      return findLeftmost(node.right);
+
+    if(node.parent != null){
+      if(node.parent.left == node) {
+        return node.parent;
+      } else {
+        return traverseUp(node.parent, node).parent;
+      }
+    }
     return null;
   }
   @EpiTest(testDataFile = "successor_in_tree.tsv")

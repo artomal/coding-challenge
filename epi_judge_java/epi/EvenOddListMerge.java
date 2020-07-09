@@ -6,8 +6,24 @@ public class EvenOddListMerge {
   @EpiTest(testDataFile = "even_odd_list_merge.tsv")
 
   public static ListNode<Integer> evenOddMerge(ListNode<Integer> L) {
-    // TODO - you fill in here.
-    return null;
+    if(L == null)
+      return null;
+
+    ListNode<Integer> e = L;
+    ListNode<Integer> o = e.next;
+    ListNode<Integer> b = o;
+
+    while(e.next != null && o.next != null){
+      e.next = e.next.next;
+      o.next = o.next.next;
+
+      e = e.next;
+      o = o.next;
+    }
+
+    e.next = b;
+
+    return L;
   }
 
   public static void main(String[] args) {

@@ -3,25 +3,45 @@ import epi.test_framework.EpiTest;
 import epi.test_framework.EpiUserType;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
 import java.util.NoSuchElementException;
 public class StackWithMax {
 
+  static class StackElm {
+
+    Integer data;
+    Integer max;
+
+    StackElm(Integer data, Integer max){
+      this.data = data;
+      this.max = max;
+    }
+  }
+
   public static class Stack {
+    Deque<StackElm> stack = new ArrayDeque<>();
+
     public boolean empty() {
-      // TODO - you fill in here.
-      return true;
+      return stack.isEmpty();
     }
     public Integer max() {
-      // TODO - you fill in here.
+      if(!this.stack.isEmpty())
+        return this.stack.peek().max;
+
       return 0;
     }
     public Integer pop() {
-      // TODO - you fill in here.
+      if(!this.stack.isEmpty())
+        return this.stack.pop().data;
+
       return 0;
     }
     public void push(Integer x) {
-      // TODO - you fill in here.
+      Integer max = stack.isEmpty() ? x : Math.max(x, stack.peek().max);
+      this.stack.push(new StackElm(x, max));
       return;
     }
   }

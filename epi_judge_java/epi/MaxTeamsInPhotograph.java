@@ -3,8 +3,9 @@ import epi.test_framework.EpiTest;
 import epi.test_framework.EpiUserType;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TimedExecutor;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
+
 public class MaxTeamsInPhotograph {
 
   public static class GraphVertex {
@@ -13,9 +14,40 @@ public class MaxTeamsInPhotograph {
     public int maxDistance = 0;
   }
 
+  public static void topologicalSort(GraphVertex v, Deque<GraphVertex> stack){
+    v.maxDistance = 1;
+
+    for(GraphVertex e : v.edges){
+      if(e.maxDistance == 0)
+        topologicalSort(e, stack);
+    }
+    stack.addFirst(v);
+  }
+
+  public static int findLongest(Deque<GraphVertex> stack){
+    int longest = 0;
+
+    while(!stack.isEmpty()){
+      GraphVertex v = stack.removeFirst();
+      longest = Math.max(longest, v.maxDistance);
+
+      for(GraphVertex e : v.edges){
+        e.maxDistance = Math.max(e.maxDistance, v.maxDistance + 1);
+      }
+    }
+    return longest;
+  }
+
   public static int findLargestNumberTeams(List<GraphVertex> graph) {
-    // TODO - you fill in here.
-    return 0;
+    Deque<GraphVertex> stack = new ArrayDeque<>();
+
+    for(GraphVertex v : graph){
+      if(v.maxDistance == 0){
+        topologicalSort(v, stack);
+      }
+    }
+
+    return findLongest(stack);
   }
   @EpiUserType(ctorParams = {int.class, int.class})
   public static class Edge {

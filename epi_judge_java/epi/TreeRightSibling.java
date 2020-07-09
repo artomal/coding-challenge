@@ -3,6 +3,7 @@ import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TimedExecutor;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 public class TreeRightSibling {
   public static class BinaryTreeNode<T> {
@@ -13,8 +14,29 @@ public class TreeRightSibling {
     public BinaryTreeNode(T data) { this.data = data; }
   }
 
+  static void f(BinaryTreeNode<Integer> node,
+                List<LinkedList<BinaryTreeNode<Integer>>> L,
+                int idx){
+    if(node == null)
+      return;
+
+    if(L.size() == idx)
+      L.add(new LinkedList<>());
+
+    f(node.left, L, idx + 1);
+
+    if(L.get(idx).size() == 0){
+      L.get(idx).addLast(node);
+    } else {
+      L.get(idx).getLast().next = node;
+      L.get(idx).addLast(node);
+    }
+
+    f(node.right, L, idx + 1);
+  }
+
   public static void constructRightSibling(BinaryTreeNode<Integer> tree) {
-    // TODO - you fill in here.
+    f(tree, new ArrayList<>(), 0);
     return;
   }
   private static BinaryTreeNode<Integer>

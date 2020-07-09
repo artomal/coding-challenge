@@ -4,8 +4,13 @@ import epi.test_framework.GenericTest;
 public class PowerXY {
   @EpiTest(testDataFile = "power_x_y.tsv")
   public static double power(double x, int y) {
-    // TODO - you fill in here.
-    return 0.0;
+    double sum = 0;
+    while(y-- != 0){
+      sum += x;
+    }
+    return sum;
+
+//    double sum = x << 1;
   }
 
   public static void main(String[] args) {

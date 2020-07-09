@@ -1,13 +1,39 @@
 package epi;
 import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
-import java.util.Iterator;
-import java.util.List;
+
+import java.util.*;
+
 public class SunsetView {
+
+  static class Building {
+    int h;
+    int idx;
+
+    Building(int h, int idx){
+      this.h = h;
+      this.idx = idx;
+    }
+  }
+
   public static List<Integer>
   examineBuildingsWithSunset(Iterator<Integer> sequence) {
-    // TODO - you fill in here.
-    return null;
+    Deque<Building> wE = new ArrayDeque<>();
+    int idx = 0;
+
+    while(sequence.hasNext()){
+      int height = sequence.next();
+      while(!wE.isEmpty() && wE.peek().h <= height)
+        wE.pop();
+
+      wE.push(new Building(height, idx++));
+    }
+
+    List<Integer> ans = new ArrayList<>();
+    while(!wE.isEmpty()){
+      ans.add(wE.pop().idx);
+    }
+    return ans;
   }
   @EpiTest(testDataFile = "sunset_view.tsv")
   public static List<Integer>

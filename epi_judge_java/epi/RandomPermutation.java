@@ -4,14 +4,23 @@ import epi.test_framework.RandomSequenceChecker;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 import epi.test_framework.TimedExecutor;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+
+import java.util.*;
+
 public class RandomPermutation {
 
   public static List<Integer> computeRandomPermutation(int n) {
-    // TODO - you fill in here.
-    return Collections.emptyList();
+    List<Integer> ans = new ArrayList<>();
+    for(int i = 0; i < n; i++){
+      ans.add(i);
+    }
+
+    for(int i = 0; i < n; i++){
+      int rand = new Random().nextInt(n - i) + i;
+      Collections.swap(ans, i, rand);
+    }
+
+    return ans;
   }
   private static int factorial(int n) {
     return n <= 1 ? 1 : n * factorial(n - 1);

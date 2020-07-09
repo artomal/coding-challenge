@@ -8,9 +8,58 @@ import java.util.Collections;
 import java.util.List;
 public class PivotList {
 
-  public static ListNode<Integer> listPivoting(ListNode<Integer> l, int x) {
-    // TODO - you fill in here.
-    return null;
+  public static ListNode<Integer> listPivoting(ListNode<Integer> l, int p) {
+    ListNode<Integer> dummyHead = new ListNode<>(null, l);
+
+    // for max
+    ListNode<Integer> mHead = new ListNode<>(null, null);
+    ListNode<Integer> mRun = mHead;
+    // for min
+    ListNode<Integer> lHead = new ListNode<>(null, null);
+    ListNode<Integer> lRun = lHead;
+
+    // prePivot node
+    ListNode<Integer> LEend = null;
+
+    ListNode<Integer> prev = dummyHead;
+    ListNode<Integer> cur = prev.next;
+
+    while(cur != null){
+      if(LEend == null && cur.data.compareTo(p) > 0){
+        mRun.next = cur;
+        mRun = mRun.next;
+        prev.next = cur.next;
+        cur = prev.next;
+        mRun.next = null;
+        continue;
+      }
+
+      if(LEend != null && cur.data.compareTo(p) < 0){
+        lRun.next = cur;
+        lRun = lRun.next;
+        prev.next = cur.next;
+        cur = prev.next;
+        lRun.next = null;
+        continue;
+      }
+
+      if(cur.data.compareTo(p) == 0)
+        LEend = prev;
+
+      prev = cur;
+      cur = cur.next;
+    }
+
+    if(lHead.next != null){
+      lRun.next = LEend.next;
+      LEend.next = lHead.next;
+    }
+
+    if(mHead.next != null)
+      prev.next = mHead.next;
+
+    dummyHead = LEend != null || mHead.next == null ? dummyHead : mHead;
+    return dummyHead.next;
   }
   public static List<Integer> linkedToList(ListNode<Integer> l) {
     List<Integer> v = new ArrayList<>();
